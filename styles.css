@@ -1,0 +1,209 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+body{
+    background-color: black;
+    color: white;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+input[type="range"]{
+    margin: 25px 50px;
+    width: 65%;
+}
+input[type="radio"]{
+    margin: 5px 50px;
+}
+#controlsContainer{
+    display:flex
+}
+#osc1controls{
+    width: 50%
+}
+#osc2controls{
+    width: 50%
+}
+#adsr{
+    border: 1px solid #333;
+    padding: 5px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+#adsr2{
+    border: 1px solid #333;
+    padding: 5px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+#adsr div{
+    width: 100%;
+}
+#keyboard{           
+    position: absolute;
+    display: flex;
+    border: 2px solid #333;
+    width: fit-content;
+    margin: 200px 50px;
+}
+
+#help{
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    background-color: #333;
+    width: 500px;
+    height: 200px;
+    padding: 25px;
+    font-size: 1.5rer;
+    border-radius: 15px;
+}
+
+#keyboard #key-c{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+#keyboard #key-c-sharp{
+    position: absolute;
+    left: 30px;
+    bottom: 50px;
+}
+#keyboard #key-d{
+    position: absolute;
+    left: 60px;
+    bottom: 0;
+}
+#keyboard #key-d-sharp{
+    position: absolute;
+    left: 90px;
+    bottom: 50px;
+}
+#keyboard #key-e{
+    position: absolute;
+    left: 120px;
+    bottom: 0;
+}
+#keyboard #key-f{
+    position: absolute;
+    left: 180px;
+    bottom: 0;
+}
+#keyboard #key-f-sharp{
+    position: absolute;
+    left: 210px;
+    bottom: 50px;
+}
+#keyboard #key-g{
+    position: absolute;
+    left: 240px;
+    bottom: 0;
+}
+#keyboard #key-g-sharp{
+    position: absolute;
+    left: 270px;
+    bottom: 50px;
+}
+#keyboard #key-a{
+    position: absolute;
+    left: 300px;
+    bottom: 0;
+}
+#keyboard #key-a-sharp{
+    position: absolute;
+    left: 330px;
+    bottom: 50px;
+}
+#keyboard #key-b{
+    position: absolute;
+    left: 360px;
+    bottom: 0;
+}
+#keyboard #key-cc{
+    position: absolute;
+    left: 420px;
+    bottom: 0;
+}
+#keyboard #key-cc-sharp{
+    position: absolute;
+    left: 450px;
+    bottom: 50px;
+}
+#keyboard #key-dd{
+    position: absolute;
+    left: 480px;
+    bottom: 0;
+}
+#keyboard #key-dd-sharp{
+    position: absolute;
+    left: 510px;
+    bottom: 50px;
+}
+#keyboard #key-ee{
+    position: absolute;
+    left: 540px;
+    bottom: 0;
+}
+#keyboard #key-ff{
+    position: absolute;
+    left: 600px;
+    bottom: 0;
+}
+#keyboard #key-ff-sharp{
+    position: absolute;
+    left: 630px;
+    bottom: 50px;
+}
+#keyboard #key-gg{
+    position: absolute;
+    left: 660px;
+    bottom: 0;
+}
+#keyboard #key-gg-sharp{
+    position: absolute;
+    left: 690px;
+    bottom: 50px;
+}
+#keyboard #key-aa{
+    position: absolute;
+    left: 720px;
+    bottom: 0;
+}
+#keyboard #key-aa-sharp{
+    position: absolute;
+    left: 750px;
+    bottom: 50px;
+}
+#keyboard #key-bb{
+    position: absolute;
+    left: 780px;
+    bottom: 0;
+}
+#keyboard #key-ccc{
+    position: absolute;
+    left: 840px;
+    bottom: 0;
+}
+.key{
+    background-color: #333;
+    border: 1px solid #111;
+    width: 65px;
+    height: 100px;
+    padding: 25px;
+    font-size: 1.5rem;
+    transition: 200ms;
+    line-height: 110px;
+}
+.sharp{
+    z-index: 9999;
+}
+.pressed{
+    background-color: chartreuse;
+    color: black;
+}

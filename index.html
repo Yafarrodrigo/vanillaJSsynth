@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSynth</title>
+    <script type="module" defer src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <span>Gain</span><input type="range" min="0" max="1" step="0.01" value="0.5" name="gain" id="control-gain"><span>0.5</span>
+    <div id="controlsContainer">
+        <div id="osc1controls">
+            <div>
+                <div>
+                    <div>
+                        <input type="radio" name="control-shape" value="sine" id="sine" checked>
+                        <label for="sine">sine</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape" value="square" id="square">
+                        <label for="square">square</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape" value="triangle" id="triangle">
+                        <label for="triangle">triangle</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape" value="sawtooth" id="sawtooth">
+                        <label for="sawtooth">sawtooth</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span>octave</span><input type="range" name="control-octave" id="octave" step="1" min="-2" max="2" value="0"><span>+0</span>
+            </div>
+            <div id="adsr">
+                <div>
+                    <span>Gain</span><input type="range" min="0" max="1" step="0.01" value="1" name="gain" id="control-gain-osc"><span>1</span>
+                </div>
+                <div>
+                    <span>Attack</span><input type="range" min="0.001" max="1" step="0.001" value="0.005" name="attack" id="control-attack"><span>0.005</span>
+                </div>
+                <div>
+                    <span>Decay</span><input type="range" min="0.001" max="1" step="0.01" value="0.01" name="decay" id="control-decay"><span>0.01</span>
+                </div>
+                <div>
+                    <span>Sustain</span><input type="range" min="0" max="1" step="0.01" value="1" name="sustain" id="control-sustain"><span>1</span>
+                </div>
+                <div>
+                    <span>Release</span><input type="range" min="0.001" max="1" step="0.01" value="0.3" name="release" id="control-release"><span>0.3</span>
+                </div>
+            </div>
+        </div>
+        <div id="osc2controls">
+            <div>
+                <div>
+                    <div>
+                        <input type="radio" name="control-shape2" value="sine" id="sine2" checked>
+                        <label for="sine2">sine</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape2" value="square" id="square2">
+                        <label for="square2">square</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape2" value="triangle" id="triangle2">
+                        <label for="triangle2">triangle</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="control-shape2" value="sawtooth" id="sawtooth2"> 
+                        <label for="sawtooth2">sawtooth</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <input type="range" name="control-octave2" id="octave2" min="-2" max="2" value="0">
+                <label for="control-octave2">+0</label>
+            </div>
+            <div id="adsr2">
+                <div>
+                    <span>Gain</span><input type="range" min="0" max="1" step="0.01" value="1" name="gain" id="control-gain-osc2"><span>1</span>
+                </div>
+                <div>
+                    <span>Attack</span><input type="range" min="0.001" max="1" step="0.001" value="0.005" name="attack2" id="control-attack2"><span>0.005</span>
+                </div>
+                <div>
+                    <span>Decay</span><input type="range" min="0.001" max="1" step="0.01" value="0.01" name="decay2" id="control-decay2"><span>0.01</span>
+                </div>
+                <div>
+                    <span>Sustain</span><input type="range" min="0" max="1" step="0.01" value="1" name="sustain2" id="control-sustain2"><span>1</span>
+                </div>
+                <div>
+                    <span>Release</span><input type="range" min="0.001" max="1" step="0.01" value="0.3" name="release2" id="control-release2"><span>0.3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="keyboardANDhelp">
+        <div id="keyboard">
+            <div id="key-c" class="key">Q</div>
+            <div id="key-c-sharp" class="key sharp">2</div>
+            <div id="key-d" class="key">W</div>
+            <div id="key-d-sharp" class="key sharp">3</div>
+            <div id="key-e" class="key">E</div>
+            <div id="key-f" class="key">R</div>
+            <div id="key-f-sharp" class="key sharp">5</div>
+            <div id="key-g" class="key">T</div>
+            <div id="key-g-sharp" class="key sharp">6</div>
+            <div id="key-a" class="key">Y</div>
+            <div id="key-a-sharp" class="key sharp">7</div>
+            <div id="key-b" class="key">U</div>
+            <div id="key-cc" class="key">Z</div>
+            <div id="key-cc-sharp" class="key sharp">S</div>
+            <div id="key-dd" class="key">X</div>
+            <div id="key-dd-sharp" class="key sharp">D</div>
+            <div id="key-ee" class="key">C</div>
+            <div id="key-ff" class="key">V</div>
+            <div id="key-ff-sharp" class="key sharp">G</div>
+            <div id="key-gg" class="key">B</div>
+            <div id="key-gg-sharp" class="key sharp">H</div>
+            <div id="key-aa" class="key">N</div>
+            <div id="key-aa-sharp" class="key sharp">J</div>
+            <div id="key-bb" class="key">M</div>
+            <div id="key-ccc" class="key">;</div>
+        </div>
+        <div id="help">
+            adasdsadas
+        </div>
+    </div>
+</body>
+</html>
