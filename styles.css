@@ -45,12 +45,49 @@ input[type="radio"]{
 #adsr div{
     width: 100%;
 }
+
+#extraControls{
+    position: absolute;
+    width: 390px;
+    height: 200px;
+    padding: 15px;
+    bottom: 25px;
+    right: 540px;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+hr{
+    border: 1px solid #555;
+}
+
+#extraControls input{
+    margin: 20px 10px;
+}
+
 #keyboard{           
     position: absolute;
     display: flex;
     border: 2px solid #333;
     width: fit-content;
-    margin: 200px 50px;
+    margin: 175px 20px;
+}
+
+#distDiv{
+    display: inline;
+    padding: 5px 5px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+#distDiv:hover{
+    background-color: rgb(96, 192, 0);
+}
+
+.activated{
+    background-color: chartreuse;
+    color: black;
 }
 
 #help{
@@ -62,7 +99,7 @@ input[type="radio"]{
     height: 200px;
     padding: 25px;
     font-size: 1.5rer;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 #keyboard #key-c{

@@ -44,11 +44,28 @@ export default class Ui{
         this.osc2releaseControl = document.getElementById('control-release2')
         this.osc1shapeControlGroup = document.querySelectorAll('input[name="control-shape"]')
         this.osc2shapeControlGroup = document.querySelectorAll('input[name="control-shape2"]')
+        
+        this.distortionButton = document.getElementById('distDiv')
+        this.distortionControl = document.getElementById('control-distortion')
+        
+        this.delayControl = document.getElementById('control-delay')
+        this.feedbackControl = document.getElementById('control-feedback')
 
         this.createListeners()
     }
 
     createListeners(){
+
+        this.distortionButton.addEventListener('click', (e) => {
+            if(this.synth.settings.distortion.enabled === true){
+                e.target.classList.remove("activated")
+                this.synth.disableDist()
+            }else{
+                e.target.classList.add("activated")
+                this.synth.enableDist()
+            }
+        })
+
         this.masterGainControl.addEventListener('input', (e) => {
             this.synth.settings.masterGain = parseFloat(e.target.value)
             this.synth.modules.masterGain.gain.setValueAtTime(parseFloat(e.target.value), this.synth.ctx.currentTime)
@@ -64,7 +81,7 @@ export default class Ui{
         })
         this.osc1attackControl.addEventListener('input', (e) => {
             this.synth.modules.adsr.attack = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
+            e.target.nextSibling.innerText = e.target.value < 0 ? "-" + e.target.value : "+" + e.target.value
         })
         this.osc1decayControl.addEventListener('input', (e) => {
             this.synth.modules.adsr.decay = parseFloat(e.target.value)
@@ -112,6 +129,24 @@ export default class Ui{
                 this.synth.settings.secondOsc.shape = e.target.value
             })
         })
+        this.distortionControl.addEventListener('input', (e) => {
+            this.synth.updateDistValue(parseFloat(e.target.value))
+            e.target.nextSibling.innerText = e.target.value
+        })
+        this.delayControl.addEventListener('input', (e) => {
+            this.synth.updateDelayValue(parseFloat(e.target.value))
+            e.target.nextSibling.innerText = e.target.value
+        })
+        this.delayControl.addEventListener('change', (e) => {
+            if(parseFloat(e.target.value) === 0){
+                this.synth.disableDelay()
+            }
+        })
+        
+        this.feedbackControl.addEventListener('input', (e) => {
+            this.synth.updateFeedbackValue(parseFloat(e.target.value))
+            e.target.nextSibling.innerText = e.target.value
+        })
     }
 
     update(){
@@ -156,6 +191,13 @@ export default class Ui{
 
         this.osc2releaseControl.value = adsr2.release
         this.osc2releaseControl.nextSibling.innerText = adsr2.release
+
+        this.distortionControl.value = settings.distortion.currentValue
+        this.distortionControl.nextSibling.innerText = settings.distortion.currentValue
+        this.delayControl.value = settings.delay.delayTime
+        this.delayControl.nextSibling.innerText = settings.delay.delayTime
+        this.feedbackControl.value = settings.delay.feedBack
+        this.feedbackControl.nextSibling.innerText = settings.delay.feedBack
     }
 
     press(note){

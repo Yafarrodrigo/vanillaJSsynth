@@ -74,6 +74,7 @@ export default class Internals{
        this.applyFilter(osc,gain)
 
         gain.connect(modules.beforeCompGain)
+
         osc.start()
         return [osc,gain,note]
     }
