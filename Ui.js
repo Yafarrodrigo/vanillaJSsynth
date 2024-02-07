@@ -1,3 +1,7 @@
+import Knob from "./Knob.js"
+import Selector from "./Selector.js"
+import Switch from "./Switch.js"
+
 export default class Ui{
     constructor(synth){
         this.synth = synth
@@ -50,6 +54,10 @@ export default class Ui{
         
         this.delayControl = document.getElementById('control-delay')
         this.feedbackControl = document.getElementById('control-feedback')
+
+        // this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0 , "knob" )
+        // this.selector = new Selector("shape", ["sine","square","triangle","sawtooth"], "sine", "selector")
+        // this.switch = new Switch('dist', 0, 'switch')
 
         this.createListeners()
     }
