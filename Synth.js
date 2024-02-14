@@ -40,6 +40,13 @@ export default class Synth{
         }
 
         this.modules = {
+
+            osc1MasterGain: this.ctx.createGain(),
+            osc2MasterGain: this.ctx.createGain(),
+
+            osc1pan: this.ctx.createStereoPanner(),
+            osc2pan: this.ctx.createStereoPanner(),
+
             masterComp: this.ctx.createDynamicsCompressor(),
             beforeCompGain: this.ctx.createGain(),
             masterGain: this.ctx.createGain(),
@@ -52,18 +59,23 @@ export default class Synth{
             adsr2: {attack: 0.001, decay: 0.001, sustain: 1, release: 0.1, maxTime: 2}
         }
 
-        this.ui.update()
+        this.modules.osc1MasterGain.channelCountMode = "explicit"
+        this.modules.osc1MasterGain.channelCount = 2
+        this.modules.osc2MasterGain.channelCountMode = "explicit"
+        this.modules.osc2MasterGain.channelCount = 2
+        this.modules.masterGain.channelCountMode = "explicit"
+        this.modules.masterGain.channelCount = 2
 
+        this.modules.osc1pan.pan.value = 0
+        this.modules.osc2pan.pan.value = 0
+
+        this.ui.update()
         this.updateDistValue(this.settings.distortion.currentValue)
+        
         this.modules.delay.delayTime.value = 0
         this.modules.delayGain.gain.value = 0.25
-        this.modules.delay.connect(this.modules.delayGain)
-        this.modules.delayGain.connect(this.modules.delay)
-        this.modules.delayGain.connect(this.modules.masterComp)
         
-        this.modules.beforeCompGain.connect(this.modules.masterComp)
-        this.modules.masterComp.connect(this.modules.masterGain)
-        this.modules.masterGain.connect(this.ctx.destination)
+        this.setupChain()
 
         this.firstOscActiveNotes = {}
         this.secondOscActiveNotes = {}
@@ -73,7 +85,24 @@ export default class Synth{
         }
     }
 
+    setupChain(){
+        this.modules.osc1MasterGain.connect(this.modules.osc1pan)
+        this.modules.osc2MasterGain.connect(this.modules.osc2pan)
+        
+        this.modules.osc1pan.connect(this.modules.beforeCompGain)
+        this.modules.osc2pan.connect(this.modules.beforeCompGain)
+
+        this.modules.beforeCompGain.connect(this.modules.masterComp)
+        this.modules.masterComp.connect(this.modules.masterGain)
+        this.modules.masterGain.connect(this.ctx.destination)
+
+        this.modules.delay.connect(this.modules.delayGain)
+        this.modules.delayGain.connect(this.modules.delay)
+        this.modules.delayGain.connect(this.modules.masterComp)
+    }
+
     enableDist(){
+        this.modules.beforeCompGain.disconnect(this.modules.masterComp)
         this.modules.beforeCompGain.connect(this.modules.dist)
         this.modules.dist.connect(this.modules.distGain)
         if(this.settings.delay.enabled){

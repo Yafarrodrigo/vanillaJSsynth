@@ -85,11 +85,11 @@ export default class Ui{
         })
         this.osc1octaveControl.addEventListener('input', (e) => {
             this.synth.settings.firstOsc.octave = parseInt(e.target.value)
-            e.target.nextSibling.innerText = e.target.value < 0 ? "-" + e.target.value : "+" + e.target.value
+            e.target.nextSibling.innerText = e.target.value < 0 ? "" + e.target.value : "+" + e.target.value
         })
         this.osc1attackControl.addEventListener('input', (e) => {
             this.synth.modules.adsr.attack = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value < 0 ? "-" + e.target.value : "+" + e.target.value
+            e.target.nextSibling.innerText = parseInt(e.target.value)
         })
         this.osc1decayControl.addEventListener('input', (e) => {
             this.synth.modules.adsr.decay = parseFloat(e.target.value)
@@ -114,7 +114,7 @@ export default class Ui{
         })
         this.osc2octaveControl.addEventListener('input', (e) => {
             this.synth.settings.secondOsc.octave = parseInt(e.target.value)
-            e.target.nextSibling.innerText = e.target.value < 0 ? "-" + e.target.value : "+" + e.target.value
+            e.target.nextSibling.innerText = e.target.value < 0 ? "" + e.target.value : "+" + e.target.value
         })
         this.osc2attackControl.addEventListener('input', (e) => {
             this.synth.modules.adsr2.attack = parseFloat(e.target.value)

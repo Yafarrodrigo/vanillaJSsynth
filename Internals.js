@@ -73,7 +73,11 @@ export default class Internals{
         
        this.applyFilter(osc,gain)
 
-        gain.connect(modules.beforeCompGain)
+        if(oscNumber === 1){
+            gain.connect(modules.osc1MasterGain)
+        }else{
+            gain.connect(modules.osc2MasterGain)
+        }
 
         osc.start()
         return [osc,gain,note]
