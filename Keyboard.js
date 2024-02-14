@@ -4,37 +4,16 @@ export default class Keyboard{
     constructor(synth){
         this.synth = synth
         this.activeKeys = {}
+        this.keyCodes = ["q","2","w","3","e","r","5","t","6","y","7","u","z","s","x","d","c","v","g","b","h","n","j","m",","]
+        this.allNotes = []
         for(let note in NoteValues){
             this.activeKeys[note] = false
+            this.allNotes.push(note)
         }
-        this.mappings = {
-            "q": "C4",
-            "2": "C#4",
-            "w": "D4",
-            "3": "D#4",
-            "e": "E4",
-            "r": "F4",
-            "5": "F#4",
-            "t": "G4",
-            "6": "G#4",
-            "y": "A4",
-            "7": "A#4",
-            "u": "B4",
-            "z": "C5",
-            "s": "C#5",
-            "x": "D5",
-            "d": "D#5",
-            "c": "E5",
-            "v": "F5",
-            "g": "F#5",
-            "b": "G5",
-            "h": "G#5",
-            "n": "A5",
-            "j": "A#5",
-            "m": "B5",
-            ",": "C6"
-        }
-
+        this.mappings = {}
+        this.keyCodes.forEach( (keyCode,index) => {
+            this.mappings[keyCode] = this.allNotes[index]
+        })
         this.createListeners()
     }
 

@@ -71,6 +71,7 @@ hr{
     border: 2px solid #333;
     width: fit-content;
     margin: 175px 20px;
+    background-color: red;
 }
 
 #distDiv{
@@ -102,127 +103,127 @@ hr{
     border-radius: 10px;
 }
 
-#keyboard #key-c{
+div[id="key-C4"]{
     position: absolute;
     left: 0;
     bottom: 0;
 }
-#keyboard #key-c-sharp{
+div[id="key-C#4"]{
     position: absolute;
     left: 30px;
     bottom: 50px;
 }
-#keyboard #key-d{
+div[id="key-D4"]{
     position: absolute;
     left: 60px;
     bottom: 0;
 }
-#keyboard #key-d-sharp{
+div[id="key-D#4"]{
     position: absolute;
     left: 90px;
     bottom: 50px;
 }
-#keyboard #key-e{
+div[id="key-E4"]{
     position: absolute;
     left: 120px;
     bottom: 0;
 }
-#keyboard #key-f{
+div[id="key-F4"]{
     position: absolute;
     left: 180px;
     bottom: 0;
 }
-#keyboard #key-f-sharp{
+div[id="key-F#4"]{
     position: absolute;
     left: 210px;
     bottom: 50px;
 }
-#keyboard #key-g{
+div[id="key-G4"]{
     position: absolute;
     left: 240px;
     bottom: 0;
 }
-#keyboard #key-g-sharp{
+div[id="key-G#4"]{
     position: absolute;
     left: 270px;
     bottom: 50px;
 }
-#keyboard #key-a{
+div[id="key-A4"]{
     position: absolute;
     left: 300px;
     bottom: 0;
 }
-#keyboard #key-a-sharp{
+div[id="key-A#4"]{
     position: absolute;
     left: 330px;
     bottom: 50px;
 }
-#keyboard #key-b{
+div[id="key-B4"]{
     position: absolute;
     left: 360px;
     bottom: 0;
 }
-#keyboard #key-cc{
+div[id="key-C5"]{
     position: absolute;
     left: 420px;
     bottom: 0;
 }
-#keyboard #key-cc-sharp{
+div[id="key-C#5"]{
     position: absolute;
     left: 450px;
     bottom: 50px;
 }
-#keyboard #key-dd{
+div[id="key-D5"]{
     position: absolute;
     left: 480px;
     bottom: 0;
 }
-#keyboard #key-dd-sharp{
+div[id="key-D#5"]{
     position: absolute;
     left: 510px;
     bottom: 50px;
 }
-#keyboard #key-ee{
+div[id="key-E5"]{
     position: absolute;
     left: 540px;
     bottom: 0;
 }
-#keyboard #key-ff{
+div[id="key-F5"]{
     position: absolute;
     left: 600px;
     bottom: 0;
 }
-#keyboard #key-ff-sharp{
+div[id="key-F#5"]{
     position: absolute;
     left: 630px;
     bottom: 50px;
 }
-#keyboard #key-gg{
+div[id="key-G5"]{
     position: absolute;
     left: 660px;
     bottom: 0;
 }
-#keyboard #key-gg-sharp{
+div[id="key-G#5"]{
     position: absolute;
     left: 690px;
     bottom: 50px;
 }
-#keyboard #key-aa{
+div[id="key-A5"]{
     position: absolute;
     left: 720px;
     bottom: 0;
 }
-#keyboard #key-aa-sharp{
+div[id="key-A#5"]{
     position: absolute;
     left: 750px;
     bottom: 50px;
 }
-#keyboard #key-bb{
+div[id="key-B5"]{
     position: absolute;
     left: 780px;
     bottom: 0;
 }
-#keyboard #key-ccc{
+div[id="key-C6"]{
     position: absolute;
     left: 840px;
     bottom: 0;

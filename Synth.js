@@ -5,8 +5,8 @@ import Internals from "./Internals.js";
 
 export default class Synth{
     constructor(){
-        this.ui = new Ui(this)
         this.keyboard = new Keyboard(this)
+        this.ui = new Ui(this)
         this.internals = new Internals(this)
 
         const ctx = new (AudioContext || webkitAudioContext())()

@@ -6,9 +6,9 @@ export default class Knob{
         this.max = max
         this.step = step
 
-        this.maxAngle = 90
-        this.angle = this.defaultPercent * this.maxAngle
-
+        this.maxAngle = 135
+        this.angle = Math.floor(defaultPercent * this.maxAngle*2) - (this.maxAngle)
+        
         this.rangeInput = document.createElement('input');
         this.rangeInput.type = 'range';
         this.rangeInput.step = step;
@@ -17,16 +17,21 @@ export default class Knob{
         this.rangeInput.value = max * defaultPercent;
         this.rangeInput.style.zIndex = "99999"
         //document.body.appendChild(this.rangeInput);
-
+        
         this.moving = false
-
+        
         this.elem = document.createElement('div')
         this.elem.id = id
         this.elem.classList.add("knob")
+        
+        this.elem.style.transform = `rotate(${this.angle + 90 }deg)`       
         document.body.appendChild(this.elem)
+
         this.subElem = document.createElement('div')
         this.subElem.classList.add("knobDot")
         this.elem.append(this.subElem)
+
+        this.elem.style.transform = `rotate(${this.angle + 90 }deg)`
 
         this.startDragPos = 0
         this.currentValue = max * defaultPercent

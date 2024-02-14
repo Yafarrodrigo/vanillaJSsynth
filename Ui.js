@@ -1,36 +1,23 @@
 import Knob from "./Knob.js"
+import NoteValues from "./NoteValues.js"
 import Selector from "./Selector.js"
 import Switch from "./Switch.js"
 
 export default class Ui{
     constructor(synth){
         this.synth = synth
-        this.keys = {
-            "C4": document.getElementById('key-c'),
-            "C#4": document.getElementById('key-c-sharp'),
-            "D4": document.getElementById('key-d'),
-            "D#4": document.getElementById('key-d-sharp'),
-            "E4": document.getElementById('key-e'),
-            "F4": document.getElementById('key-f'),
-            "F#4": document.getElementById('key-f-sharp'),
-            "G4": document.getElementById('key-g'),
-            "G#4": document.getElementById('key-g-sharp'),
-            "A4": document.getElementById('key-a'),
-            "A#4": document.getElementById('key-a-sharp'),
-            "B4": document.getElementById('key-b'),
-            "C5": document.getElementById('key-cc'),
-            "C#5": document.getElementById('key-cc-sharp'),
-            "D5": document.getElementById('key-dd'),
-            "D#5": document.getElementById('key-dd-sharp'),
-            "E5": document.getElementById('key-ee'),
-            "F5": document.getElementById('key-ff'),
-            "F#5": document.getElementById('key-ff-sharp'),
-            "G5": document.getElementById('key-gg'),
-            "G#5": document.getElementById('key-gg-sharp'),
-            "A5": document.getElementById('key-aa'),
-            "A#5": document.getElementById('key-aa-sharp'),
-            "B5": document.getElementById('key-bb'),
-            "C6": document.getElementById('key-ccc')
+
+        this.keys = {}
+        const mappings = synth.keyboard.keyCodes
+        
+        let counter = 0
+        for(const note in NoteValues){
+            const newNoteDiv = document.createElement('div')
+            newNoteDiv.id = 'key-' + note
+            newNoteDiv.innerText = mappings[counter]
+            counter++
+            note.includes("#") ? newNoteDiv.classList.add('key','sharp') : newNoteDiv.classList.add('key')
+            this.keys[note] = newNoteDiv
         }
 
         this.masterGainControl = document.getElementById('control-gain')
@@ -55,11 +42,25 @@ export default class Ui{
         this.delayControl = document.getElementById('control-delay')
         this.feedbackControl = document.getElementById('control-feedback')
 
-        // this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0 , "knob" )
+        //this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0.5 , "knob" )
         // this.selector = new Selector("shape", ["sine","square","triangle","sawtooth"], "sine", "selector")
         // this.switch = new Switch('dist', 0, 'switch')
 
+        this.createKeyboard()
         this.createListeners()
+    }
+
+    createKeyboard(){
+
+        const keyboardElem = document.createElement('div')
+        keyboardElem.id = 'keyboard'
+
+        for(const key in this.keys){
+            keyboardElem.append(this.keys[key])
+        }
+
+        const container = document.getElementById('keyboardANDhelp')
+        container.insertBefore(keyboardElem, container.firstChild)
     }
 
     createListeners(){
