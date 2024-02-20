@@ -1,5 +1,5 @@
 export default class Knob{
-    constructor(name,min,max,step,defaultPercent, id){
+    constructor(name,min,max,step,defaultPercent){
 
         this.name = name
         this.min = min
@@ -16,12 +16,12 @@ export default class Knob{
         this.rangeInput.max = max;
         this.rangeInput.value = max * defaultPercent;
         this.rangeInput.style.zIndex = "99999"
-        //document.body.appendChild(this.rangeInput);
+        this.rangeInput.id = name
+        document.body.appendChild(this.rangeInput);
         
         this.moving = false
         
         this.elem = document.createElement('div')
-        this.elem.id = id
         this.elem.classList.add("knob")
         
         this.elem.style.transform = `rotate(${this.angle + 90 }deg)`       
@@ -34,7 +34,7 @@ export default class Knob{
         this.elem.style.transform = `rotate(${this.angle + 90 }deg)`
 
         this.startDragPos = 0
-        this.currentValue = max * defaultPercent
+        this.value = max * defaultPercent
         this.currentPercent = defaultPercent
         this.prevDifValue = 0
 
@@ -49,17 +49,17 @@ export default class Knob{
                 this.prevDifValue = 0
                 this.startDragPos = e.clientY
             }
-            if((this.currentValue + dif) > this.max) this.currentValue = this.max
-            else if ((this.currentValue + dif) < this.min) this.currentValue = this.min
-            else this.currentValue += dif
+            if((this.value + dif) > this.max) this.value = this.max
+            else if ((this.value + dif) < this.min) this.value = this.min
+            else this.value += dif
 
-            this.rangeInput.value = this.currentValue
-            this.currentPercent = this.currentValue * this.max
+            this.rangeInput.value = this.value
+            this.rangeInput.dispatchEvent(new Event('change'))
+
+            this.currentPercent = this.value * this.max
 
             this.angle = Math.floor(this.currentPercent * this.maxAngle*2) - (this.maxAngle)
             this.elem.style.transform = `rotate(${this.angle + 90 }deg)`
-
-            console.log(this.name + ": "+ this.rangeInput.value)
         }
 
         this.elem.addEventListener('mousedown', (e) => {
@@ -72,6 +72,8 @@ export default class Knob{
                 window.removeEventListener('mousemove', dragInput)
             })
         })
+
+       /*  return {knob: this.elem, rangeElem:this.rangeInput} */
     }
 }
 

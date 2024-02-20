@@ -17,15 +17,21 @@ export default class Synth{
             masterGain: 0.5,
             firstOsc: {
                 enabled: true,
-                gain: 1,
+                oldGain:0,
+                gain: 0.5,
+                pan: 0,
+                octave: 0,
                 shape: "sine",
-                octave: 0
+                shapes:["sine","triange","square","sawtooth"]
             },
             secondOsc: {
                 enabled: true,
-                gain: 1,
+                oldGain: 0,
+                gain: 0.5,
+                pan: 0,
+                octave: 0,
                 shape: "sine",
-                octave: 0
+                shapes:["sine","triange","square","sawtooth"]
             },
             distortion:{
                 enabled: false,
@@ -61,15 +67,16 @@ export default class Synth{
 
         this.modules.osc1MasterGain.channelCountMode = "explicit"
         this.modules.osc1MasterGain.channelCount = 2
+        this.modules.osc1MasterGain.gain.value = this.settings.firstOsc.gain
         this.modules.osc2MasterGain.channelCountMode = "explicit"
         this.modules.osc2MasterGain.channelCount = 2
+        this.modules.osc2MasterGain.gain.value = this.settings.secondOsc.gain
         this.modules.masterGain.channelCountMode = "explicit"
         this.modules.masterGain.channelCount = 2
 
-        this.modules.osc1pan.pan.value = 0
-        this.modules.osc2pan.pan.value = 0
+        this.modules.osc1pan.pan.value = this.settings.firstOsc.pan
+        this.modules.osc2pan.pan.value = this.settings.secondOsc.pan
 
-        this.ui.update()
         this.updateDistValue(this.settings.distortion.currentValue)
         
         this.modules.delay.delayTime.value = 0
@@ -83,6 +90,75 @@ export default class Synth{
             this.firstOscActiveNotes[key] = null
             this.secondOscActiveNotes[key] = null
         }
+    }
+
+    changeOsc1Volume(val){
+        this.settings.firstOsc.oldGain = this.settings.firstOsc.gain
+        this.settings.firstOsc.gain = val
+        if(this.settings.firstOsc.enabled === true){
+            this.modules.osc1MasterGain.gain.setValueAtTime(val, this.ctx.currentTime)
+        }
+    }
+
+    changeOsc2Volume(val){
+        this.settings.secondOsc.oldGain = this.settings.secondOsc.gain
+        this.settings.secondOsc.gain = val
+        if(this.settings.secondOsc.enabled === true){
+            this.modules.osc2MasterGain.gain.setValueAtTime(val, this.ctx.currentTime)
+        }
+    }
+
+    changeMasterVolume(val){
+        this.settings.masterGain = val
+        this.modules.masterGain.gain.setValueAtTime(val, this.ctx.currentTime)
+    }
+
+    changeOsc1Pan(val){
+        this.settings.firstOsc.pan = (val*2)-1
+        this.modules.osc1pan.pan.value = (val*2)-1
+    }
+    changeOsc2Pan(val){
+        this.settings.secondOsc.pan = (val*2)-1
+        this.modules.osc2pan.pan.value = (val*2)-1
+    }
+
+    toggleOsc1(){
+        if(this.settings.firstOsc.enabled === true){
+            this.changeOsc1Volume(0)
+            this.settings.firstOsc.enabled = false
+
+        }else{
+            this.settings.firstOsc.enabled = true
+            this.changeOsc1Volume(this.settings.firstOsc.oldGain)
+            this.settings.firstOsc.oldGain = this.settings.firstOsc.gain
+        }
+    }
+    toggleOsc2(){
+        console.log("asdasd");
+        if(this.settings.secondOsc.enabled === true){
+            this.settings.secondOsc.oldGain = this.settings.secondOsc.gain
+            this.changeOsc2Volume(0)
+            this.settings.secondOsc.enabled = false
+
+        }else{
+            this.settings.secondOsc.enabled = true
+            this.changeOsc2Volume(this.settings.secondOsc.oldGain)
+            this.settings.secondOsc.oldGain = this.settings.secondOsc.gain
+        }
+    }
+    changeShapeOsc1(){
+        if(this.settings.firstOsc.shape === "sine") this.settings.firstOsc.shape = "triangle"
+        else if(this.settings.firstOsc.shape === "triangle") this.settings.firstOsc.shape = "square"
+        else if(this.settings.firstOsc.shape === "square") this.settings.firstOsc.shape = "sawtooth"
+        else if(this.settings.firstOsc.shape === "sawtooth") this.settings.firstOsc.shape = "sine"
+        else this.settings.firstOsc.shape = "sine"
+    }
+    changeShapeOsc2(){
+        if(this.settings.secondOsc.shape === "sine") this.settings.secondOsc.shape = "triangle"
+        else if(this.settings.secondOsc.shape === "triangle") this.settings.secondOsc.shape = "square"
+        else if(this.settings.secondOsc.shape === "square") this.settings.secondOsc.shape = "sawtooth"
+        else if(this.settings.secondOsc.shape === "sawtooth") this.settings.secondOsc.shape = "sine"
+        else this.settings.secondOsc.shape = "sine"
     }
 
     setupChain(){
@@ -160,38 +236,35 @@ export default class Synth{
         }
     }
     noteOff(note){
+        const now = this.ctx.currentTime
+        const {adsr,adsr2} = this.modules
     
-        if(this.settings.firstOsc.enabled === true){
-            const osc = this.firstOscActiveNotes[note]
-            const {adsr} = this.modules
+        const osc = this.firstOscActiveNotes[note]
+        if(osc !== null && osc !== undefined){
             
-            const now = this.ctx.currentTime
             const relDur = adsr.release * adsr.maxTime
             const relEnd = now + relDur
             
             osc[1].gain.cancelScheduledValues(now)
             osc[1].gain.setValueAtTime(osc[1].gain.value, now)
             osc[1].gain.linearRampToValueAtTime(0, relEnd)
-    
+
             osc[0].stop(relEnd)
             this.firstOscActiveNotes[note] = null
         }
-        if(this.settings.secondOsc.enabled === true){
+        const osc2 = this.secondOscActiveNotes[note]
+        if(osc2 !== null && osc2 !== undefined){
 
-            const osc2 = this.secondOscActiveNotes[note]
-            const {adsr2} = this.modules
-
-            const now = this.ctx.currentTime
             const relDur2 = adsr2.release * adsr2.maxTime
             const relEnd2 = now + relDur2
-
+    
             osc2[1].gain.cancelScheduledValues(now)
             osc2[1].gain.setValueAtTime(osc2[1].gain.value, now)
             osc2[1].gain.linearRampToValueAtTime(0, relEnd2)
-
+    
             osc2[0].stop(relEnd2)
             this.secondOscActiveNotes[note] = null
-        }
+        }    
     }
 }
 

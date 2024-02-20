@@ -20,6 +20,10 @@ export default class Ui{
             this.keys[note] = newNoteDiv
         }
 
+        //this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0.5 ,"knob")
+        // this.selector = new Selector("shape", ["sine","square","triangle","sawtooth"], "sine", "selector")
+        // this.switch = new Switch('dist', 0, 'switch')
+
         this.masterGainControl = document.getElementById('control-gain')
         this.osc1gainControl = document.getElementById('control-gain-osc')
         this.osc2gainControl = document.getElementById('control-gain-osc2')
@@ -42,171 +46,137 @@ export default class Ui{
         this.delayControl = document.getElementById('control-delay')
         this.feedbackControl = document.getElementById('control-feedback')
 
-        //this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0.5 , "knob" )
-        // this.selector = new Selector("shape", ["sine","square","triangle","sawtooth"], "sine", "selector")
-        // this.switch = new Switch('dist', 0, 'switch')
+        this.rangeElements = {}
 
+        
+        this.createBothOscs()
+        this.createAdsrUI()
         this.createKeyboard()
-        this.createListeners()
+        //this.createListeners()
+    }
+
+    createBothOscs(){
+
+        const group = newElem({type:"div", id:"osc-group"})
+        const osc1 = this.createOscUI(1)
+        const osc2 = this.createOscUI(2)
+
+        group.append(osc1,osc2)
+
+        document.body.append(group)
+    }
+
+    createOscUI(number){
+        const group = newElem({type:"div",classes:["osc-group"]})
+        const container = newElem({type:"div",classes:["control-container", number === 1 ? "osc1" : "osc2"]})
+        const label = newElem({type:"div",classes:["container-label"]})
+        const knobContainer = newElem({type:"div",classes:["knob-container"]})
+        number === 1 ? label.innerText = "Osc1" : label.innerText = "Osc2"
+        
+        //osc1 switch
+        const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
+        const newSwitch = new Switch(number === 1 ? 'osc1switch' : 'osc2switch', 1, () => {
+            number === 1 ? this.synth.toggleOsc1() : this.synth.toggleOsc2() 
+        })
+        const switchElem = newSwitch.elem
+
+        // osc1 gain
+        const knobSpot = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob1 = new Knob( number === 1 ? "osc1gain" : "osc2gain", 0 , 1 , 0.001 , 0.5)
+        const knob1Elem = newKnob1.elem
+        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
+        newKnob1.rangeInput.addEventListener('change', (e) => {
+            number === 1 ? this.synth.changeOsc1Volume(parseFloat(e.target.value)) : this.synth.changeOsc2Volume(parseFloat(e.target.value))
+        })
+        //osc1 pan
+        const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob2 = new Knob( number === 1 ? "osc1pan" : "osc2pan" , 0 , 1 , 0.001 , 0.5)
+        const knob2Elem = newKnob2.elem
+        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
+        newKnob2.rangeInput.addEventListener('change', (e) => {
+            number === 1 ? this.synth.changeOsc1Pan(parseFloat(e.target.value)) : this.synth.changeOsc2Pan(parseFloat(e.target.value))
+        })
+        // osc1 shape selector
+        const knobSpot4 = newElem({type:"div",classes:["knob-spot"]})
+        const selector = new Selector( number === 1 ? "osc1shape" : "osc2shape", ["sine","square","triangle","sawtooth"], "sine", ()=>{
+            number === 1 ? this.synth.changeShapeOsc1() : this.synth.changeShapeOsc2()
+        })
+        const selectElem = selector.elem
+
+        knobSpot.append(knob1Elem)
+        knobSpot2.append(knob2Elem)
+        knobSpot3.append(switchElem)
+        knobSpot4.append(selectElem)
+        knobContainer.append(knobSpot3,knobSpot,knobSpot2,knobSpot4)
+        container.append(label,knobContainer)
+        group.append(container)
+        
+        return group
+    }
+
+    createAdsrUI(){
+        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const label = newElem({type:"div",classes:["container-label"]})
+        label.innerText = "A.D.S.R."
+        const container = newElem({type:"div",classes:["knob-container"]})
+        // adsr attack
+        const knobSpot = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob1 = new Knob("adsr-attack", 0.001 , 1 , 0.001 , 0.1)
+        const knob1Elem = newKnob1.elem
+        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
+        newKnob1.rangeInput.addEventListener('change', (e) => {
+            this.synth.modules.adsr.attack = parseFloat(e.target.value)
+        })
+
+        // adsr decay
+        const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob2 = new Knob("adsr-decay", 0 , 1 , 0.001 , 0.5)
+        const knob2Elem = newKnob2.elem
+        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
+        newKnob2.rangeInput.addEventListener('change', (e) => {
+            this.synth.modules.adsr.decay = parseFloat(e.target.value)
+        })
+
+        // adsr sustain
+        const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob3 = new Knob("adsr-decay", 0 , 1 , 0.001 , 1)
+        const knob3Elem = newKnob3.elem
+        this.rangeElements[newKnob3.name] = newKnob3.rangeInput
+        newKnob3.rangeInput.addEventListener('change', (e) => {
+            this.synth.modules.adsr.sustain = parseFloat(e.target.value)
+        })
+
+        // adsr release
+        const knobSpot4 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob4 = new Knob("adsr-decay", 0 , 1 , 0.001 , 0.1)
+        const knob4Elem = newKnob4.elem
+        this.rangeElements[newKnob4.name] = newKnob4.rangeInput
+        newKnob4.rangeInput.addEventListener('change', (e) => {
+            this.synth.modules.adsr.release = parseFloat(e.target.value)
+        })
+
+        group.append(label)
+
+        knobSpot.append(knob1Elem)
+        knobSpot2.append(knob2Elem)
+        knobSpot3.append(knob3Elem)
+        knobSpot4.append(knob4Elem)
+
+        container.append(knobSpot,knobSpot2,knobSpot3,knobSpot4)
+        group.append(container)
+        document.body.append(group)
     }
 
     createKeyboard(){
 
-        const keyboardElem = document.createElement('div')
-        keyboardElem.id = 'keyboard'
+        const keyboardElem = newElem({type:'div', id:"keyboard"})
 
         for(const key in this.keys){
             keyboardElem.append(this.keys[key])
         }
 
-        const container = document.getElementById('keyboardANDhelp')
+        const container = document.getElementById('keyboard-container')
         container.insertBefore(keyboardElem, container.firstChild)
-    }
-
-    createListeners(){
-
-        this.distortionButton.addEventListener('click', (e) => {
-            if(this.synth.settings.distortion.enabled === true){
-                e.target.classList.remove("activated")
-                this.synth.disableDist()
-            }else{
-                e.target.classList.add("activated")
-                this.synth.enableDist()
-            }
-        })
-
-        this.masterGainControl.addEventListener('input', (e) => {
-            this.synth.settings.masterGain = parseFloat(e.target.value)
-            this.synth.modules.masterGain.gain.setValueAtTime(parseFloat(e.target.value), this.synth.ctx.currentTime)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc1gainControl.addEventListener('input', (e) => {
-            this.synth.settings.firstOsc.gain = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc1octaveControl.addEventListener('input', (e) => {
-            this.synth.settings.firstOsc.octave = parseInt(e.target.value)
-            e.target.nextSibling.innerText = e.target.value < 0 ? "" + e.target.value : "+" + e.target.value
-        })
-        this.osc1attackControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr.attack = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = parseInt(e.target.value)
-        })
-        this.osc1decayControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr.decay = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc1sustainControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr.sustain = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc1releaseControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr.release = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc1shapeControlGroup.forEach( elem => {
-            elem.addEventListener('click', (e) => {
-                this.synth.settings.firstOsc.shape = e.target.value
-            })
-        })
-        this.osc2gainControl.addEventListener('input', (e) => {
-            this.synth.settings.secondOsc.gain = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc2octaveControl.addEventListener('input', (e) => {
-            this.synth.settings.secondOsc.octave = parseInt(e.target.value)
-            e.target.nextSibling.innerText = e.target.value < 0 ? "" + e.target.value : "+" + e.target.value
-        })
-        this.osc2attackControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr2.attack = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc2decayControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr2.decay = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc2sustainControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr2.sustain = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc2releaseControl.addEventListener('input', (e) => {
-            this.synth.modules.adsr2.release = parseFloat(e.target.value)
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.osc2shapeControlGroup.forEach( elem => {
-            elem.addEventListener('click', (e) => {
-                this.synth.settings.secondOsc.shape = e.target.value
-            })
-        })
-        this.distortionControl.addEventListener('input', (e) => {
-            this.synth.updateDistValue(parseFloat(e.target.value))
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.delayControl.addEventListener('input', (e) => {
-            this.synth.updateDelayValue(parseFloat(e.target.value))
-            e.target.nextSibling.innerText = e.target.value
-        })
-        this.delayControl.addEventListener('change', (e) => {
-            if(parseFloat(e.target.value) === 0){
-                this.synth.disableDelay()
-            }
-        })
-        
-        this.feedbackControl.addEventListener('input', (e) => {
-            this.synth.updateFeedbackValue(parseFloat(e.target.value))
-            e.target.nextSibling.innerText = e.target.value
-        })
-    }
-
-    update(){
-        const { settings,modules } = this.synth
-        const {adsr,adsr2} = modules
-
-        this.masterGainControl.value = settings.masterGain
-        this.masterGainControl.nextSibling.innerText = settings.masterGain
-        
-        this.osc1gainControl.value =  settings.firstOsc.gain
-        this.osc1gainControl.nextSibling.innerText = settings.firstOsc.gain
-
-        this.osc2gainControl.value = settings.secondOsc.gain
-        this.osc2gainControl.nextSibling.innerText = settings.secondOsc.gain
-
-        this.osc1octaveControl.value = settings.firstOsc.octave
-        this.osc1octaveControl.nextSibling.innerText = settings.firstOsc.octave
-
-        this.osc2octaveControl.value = settings.secondOsc.octave
-        this.osc2octaveControl.nextSibling.innerText = settings.secondOsc.octave
-
-        this.osc1attackControl.value = adsr.attack
-        this.osc1attackControl.nextSibling.innerText = adsr.attack
-
-        this.osc2attackControl.value = adsr2.attack
-        this.osc2attackControl.nextSibling.innerText = adsr2.attack
-
-        this.osc1decayControl.value = adsr.decay
-        this.osc1decayControl.nextSibling.innerText = adsr.decay
-
-        this.osc2decayControl.value = adsr2.decay
-        this.osc2decayControl.nextSibling.innerText =adsr2.decay
-
-        this.osc1sustainControl.value = adsr.sustain
-        this.osc1sustainControl.nextSibling.innerText =adsr.sustain
-
-        this.osc2sustainControl.value = adsr2.sustain
-        this.osc2sustainControl.nextSibling.innerText =adsr2.sustain
-
-        this.osc1releaseControl.value = adsr.release
-        this.osc1releaseControl.nextSibling.innerText = adsr.release
-
-        this.osc2releaseControl.value = adsr2.release
-        this.osc2releaseControl.nextSibling.innerText = adsr2.release
-
-        this.distortionControl.value = settings.distortion.currentValue
-        this.distortionControl.nextSibling.innerText = settings.distortion.currentValue
-        this.delayControl.value = settings.delay.delayTime
-        this.delayControl.nextSibling.innerText = settings.delay.delayTime
-        this.feedbackControl.value = settings.delay.feedBack
-        this.feedbackControl.nextSibling.innerText = settings.delay.feedBack
     }
 
     press(note){
@@ -216,4 +186,12 @@ export default class Ui{
     release(note){
         this.keys[note].classList.remove('pressed')
     }
+}
+
+function newElem({type="div", id=Math.random()*9999, classes=""}){
+    const elem = document.createElement(type)
+    elem.id = id
+    elem.classList.add(...classes)
+
+    return elem
 }

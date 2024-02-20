@@ -3,136 +3,104 @@
     padding: 0;
     box-sizing: border-box;
     outline: none;
-    background-color: #333;
-    user-select: none;
 }
-
-input{
-    opacity: 0;
-}
-
 body{
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    overflow: hidden;
-}
-
-.knob-container{
-    position: relative;
-    width: 95%;
-    height: 80%;
-    border: 1px solid red;
-    display: flex;
-    border-radius: 5px;
-}
-
-.knob-spot{
-    height: 100%;
-    width: 100%;
-    border: 1px solid green;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    border-radius: 5px;
-}
-
-.knob{
-    border: 1px solid yellow;
-    border-radius: 50%;
-    width: 75px;
-    height: 75px;
-}
-
-.knobDot{
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    top: 30px;
-    left: 5px;
-    border-radius: 50%;
-    border: 2px solid green;
-}
-
-.switch{
-    width: 50px;
-    height: 75%;
-    border: 1px solid green;
-    border-radius: 5px;
-}
-
-.selector{
-    width: 50px;
-    height: 75%;
-    border: 1px solid green;
-    border-radius: 5px;
-}
-
-.control-container{
-    position: relative;
-    background-color: #222;
-    border: 5px #111;
-    border-style: solid;
-    border-radius: 15px;
-    margin: 25px;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-}
-
-.container-label{
-    position: absolute;
-    left: 15px;
-    top: -28px;
+    background-color: black;
     color: white;
-    font-size: 1.5rem;
-    padding: 10px;
-    background-color: #333;
-    width: fit-content;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
 }
-
-.osc-group{
+input[type="range"]{
+    margin: 25px 50px;
+    width: 65%;
+}
+input[type="radio"]{
+    margin: 5px 50px;
+}
+#controlsContainer{
+    display:flex
+}
+#osc1controls{
+    width: 50%
+}
+#osc2controls{
+    width: 50%
+}
+#adsr{
+    border: 1px solid #333;
+    padding: 5px;
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
 }
-
-.osc1, .osc2{
-    width: 600px;
-    height: 150px;
+#adsr2{
+    border: 1px solid #333;
+    padding: 5px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+#adsr div{
+    width: 100%;
 }
 
-.adsr{
+#extraControls{
+    position: absolute;
+    width: 390px;
+    height: 200px;
+    padding: 15px;
+    bottom: 25px;
+    right: 540px;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+hr{
+    border: 1px solid #555;
+}
+
+#extraControls input{
+    margin: 20px 10px;
+}
+
+#keyboard{           
+    position: absolute;
+    display: flex;
+    border: 2px solid #333;
+    width: fit-content;
+    margin: 175px 20px;
+    background-color: red;
+}
+
+#distDiv{
+    display: inline;
+    padding: 5px 5px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+#distDiv:hover{
+    background-color: rgb(96, 192, 0);
+}
+
+.activated{
+    background-color: chartreuse;
+    color: black;
+}
+
+#help{
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    background-color: #333;
     width: 500px;
-    height: 150px;
-}
-
-.dist{
-    width: 150px;
-    height: 150px;
-}
-
-.master{
-    width: 250px;
-    height: 150px;
-}
-
-.delay{
-    width: 350px;
-    height: 150px;
-}
-
-#keyboard{
-    position: relative;
-    background-color: #222;
-    border: 5px #111;
-    border-style: solid;
-    border-radius: 15px;
-    margin: 25px;
-    display: grid;
-    align-items: center;
-    justify-items: center;
+    height: 200px;
+    padding: 25px;
+    font-size: 1.5rer;
+    border-radius: 10px;
 }
 
 div[id="key-C4"]{
@@ -276,4 +244,60 @@ div[id="key-C6"]{
 .pressed{
     background-color: chartreuse;
     color: black;
+}
+
+#knob2{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    position: absolute;
+    top: 250px;
+    left: 650px;
+    background-color: red;
+    z-index: 9999;
+    user-select: none;
+    cursor: grab;
+}
+
+#knob{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    position: absolute;
+    top: 250px;
+    left: 250px;
+    background-color: red;
+    z-index: 9999;
+    user-select: none;
+    cursor: grab;
+}
+
+.knobDot{
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    position: absolute;
+    top: 150px;
+    left: 0;
+    width: 100px;
+}
+
+#selector{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: blue;
+    z-index: 100000;
+}
+
+#switch{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 250px;
+    background-color: yellow;
+    z-index: 100000;
 }

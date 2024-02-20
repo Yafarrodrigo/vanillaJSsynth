@@ -23,11 +23,10 @@ export default class Internals{
     createOsc(freq, oscNumber){
 
         const {ctx,modules, settings} = this.synth
-        let shape,oscGain,decay,sustain, attack, maxTime, octave
+        let shape,decay,sustain, attack, maxTime, octave
 
         if(oscNumber === 1){
             shape = settings.firstOsc.shape
-            oscGain = settings.firstOsc.gain
             octave = settings.firstOsc.octave
             decay = modules.adsr.decay
             sustain = modules.adsr.sustain
@@ -35,7 +34,6 @@ export default class Internals{
             maxTime = modules.adsr.maxTime
         }else{
             shape = settings.secondOsc.shape
-            oscGain = settings.secondOsc.gain
             octave = settings.secondOsc.octave
             decay = modules.adsr2.decay
             sustain = modules.adsr2.sustain
@@ -54,8 +52,8 @@ export default class Internals{
         
         
         gain.gain.setValueAtTime(0, now)
-        gain.gain.linearRampToValueAtTime(0.25 * oscGain, atkEnd)
-        gain.gain.setTargetAtTime(0.25 * sustain * oscGain, atkEnd, decayDur)
+        gain.gain.linearRampToValueAtTime(0.25, atkEnd)
+        gain.gain.setTargetAtTime(0.25 * sustain, atkEnd, decayDur)
 
         let octaveMult
         if(octave === -1){
