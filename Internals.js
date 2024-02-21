@@ -28,18 +28,16 @@ export default class Internals{
         if(oscNumber === 1){
             shape = settings.firstOsc.shape
             octave = settings.firstOsc.octave
-            decay = modules.adsr.decay
-            sustain = modules.adsr.sustain
-            attack = modules.adsr.attack
-            maxTime = modules.adsr.maxTime
         }else{
             shape = settings.secondOsc.shape
             octave = settings.secondOsc.octave
-            decay = modules.adsr2.decay
-            sustain = modules.adsr2.sustain
-            attack = modules.adsr2.attack
-            maxTime = modules.adsr2.maxTime
         }
+
+        decay = modules.adsr.decay
+        sustain = modules.adsr.sustain
+        attack = modules.adsr.attack
+        maxTime = modules.adsr.maxTime
+        
         const note = Object.entries(NoteValues).find( entry => entry[1] === freq)[0]
 
         const gain = ctx.createGain()

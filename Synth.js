@@ -40,7 +40,7 @@ export default class Synth{
             },
             delay:{
                 enabled: false,
-                delayTime: 0,
+                delayTime: 0.001,
                 feedBack: 0.25
             }
         }
@@ -61,8 +61,7 @@ export default class Synth{
             delay: this.ctx.createDelay(),
             delayGain: this.ctx.createGain(),
 
-            adsr: {attack: 0.001, decay: 0.001, sustain: 1, release: 0.1, maxTime: 2},
-            adsr2: {attack: 0.001, decay: 0.001, sustain: 1, release: 0.1, maxTime: 2}
+            adsr: {attack: 0.001, decay: 0.001, sustain: 1, release: 0.1, maxTime: 2}
         }
 
         this.modules.osc1MasterGain.channelCountMode = "explicit"
@@ -237,13 +236,13 @@ export default class Synth{
     }
     noteOff(note){
         const now = this.ctx.currentTime
-        const {adsr,adsr2} = this.modules
+        const {adsr} = this.modules
+        const relDur = adsr.release * adsr.maxTime
+        const relEnd = now + relDur
     
         const osc = this.firstOscActiveNotes[note]
         if(osc !== null && osc !== undefined){
             
-            const relDur = adsr.release * adsr.maxTime
-            const relEnd = now + relDur
             
             osc[1].gain.cancelScheduledValues(now)
             osc[1].gain.setValueAtTime(osc[1].gain.value, now)
@@ -254,15 +253,12 @@ export default class Synth{
         }
         const osc2 = this.secondOscActiveNotes[note]
         if(osc2 !== null && osc2 !== undefined){
-
-            const relDur2 = adsr2.release * adsr2.maxTime
-            const relEnd2 = now + relDur2
     
             osc2[1].gain.cancelScheduledValues(now)
             osc2[1].gain.setValueAtTime(osc2[1].gain.value, now)
-            osc2[1].gain.linearRampToValueAtTime(0, relEnd2)
+            osc2[1].gain.linearRampToValueAtTime(0, relEnd)
     
-            osc2[0].stop(relEnd2)
+            osc2[0].stop(relEnd)
             this.secondOscActiveNotes[note] = null
         }    
     }

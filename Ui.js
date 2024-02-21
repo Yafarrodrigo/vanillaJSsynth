@@ -51,6 +51,8 @@ export default class Ui{
         
         this.createBothOscs()
         this.createAdsrUI()
+        this.createDelayUI()
+        this.createDistUI()
         this.createKeyboard()
         //this.createListeners()
     }
@@ -163,6 +165,88 @@ export default class Ui{
         knobSpot4.append(knob4Elem)
 
         container.append(knobSpot,knobSpot2,knobSpot3,knobSpot4)
+        group.append(container)
+        document.body.append(group)
+    }
+
+    createDelayUI(){
+        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const label = newElem({type:"div",classes:["container-label"]})
+        label.innerText = "Delay"
+        const container = newElem({type:"div",classes:["knob-container"]})
+
+        //delay switch
+        const knobSpot = newElem({type:"div",classes:["knob-spot"]})
+        const newSwitch = new Switch("delay-time", 1, () => {
+            if(this.synth.settings.delay.enabled === true){
+                this.synth.disableDelay()
+            }else{
+                this.synth.enableDelay()
+            }
+        })
+        const switchElem = newSwitch.elem
+
+        // delay time knob
+        const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob2 = new Knob("delay-time", 0.001 , 1 , 0.001 , 0)
+        const knob2Elem = newKnob2.elem
+        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
+        newKnob2.rangeInput.addEventListener('change', (e) => {
+            this.synth.updateDelayValue(parseFloat(e.target.value))
+        })
+
+        // delay feedback knob
+        const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob3 = new Knob("delay-feedback", 0 , 1 , 0.001 , 0.25)
+        const knob3Elem = newKnob3.elem
+        this.rangeElements[newKnob3.name] = newKnob3.rangeInput
+        newKnob3.rangeInput.addEventListener('change', (e) => {
+            this.synth.updateFeedbackValue(parseFloat(e.target.value))
+        })
+
+        group.append(label)
+
+        knobSpot.append(switchElem)
+        knobSpot2.append(knob2Elem)
+        knobSpot3.append(knob3Elem)
+
+        container.append(knobSpot,knobSpot2,knobSpot3)
+        group.append(container)
+        document.body.append(group)
+    }
+
+    createDistUI(){
+        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const label = newElem({type:"div",classes:["container-label"]})
+        label.innerText = "Distortion"
+        const container = newElem({type:"div",classes:["knob-container"]})
+
+        //distortion switch
+        const knobSpot = newElem({type:"div",classes:["knob-spot"]})
+        const newSwitch = new Switch("distortion-switch", 1, () => {
+            if(this.synth.settings.distortion.enabled === true){
+                this.synth.disableDist()
+            }else{
+                this.synth.enableDist()
+            }
+        })
+        const switchElem = newSwitch.elem
+
+        // distortion gain knob
+        const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob2 = new Knob("distortion-gain", 0 , 1 , 0.001 , 0)
+        const knob2Elem = newKnob2.elem
+        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
+        newKnob2.rangeInput.addEventListener('change', (e) => {
+            this.synth.updateDistValue(parseFloat(e.target.value))
+        })
+
+        group.append(label)
+
+        knobSpot.append(switchElem)
+        knobSpot2.append(knob2Elem)
+
+        container.append(knobSpot,knobSpot2)
         group.append(container)
         document.body.append(group)
     }
