@@ -99,6 +99,11 @@ export default class Synth{
         }
     }
 
+    changeMasterGain(val){
+        this.settings.masterGain = val
+        this.modules.masterGain.gain.setValueAtTime(val, this.ctx.currentTime)
+    }
+
     changeOsc1Volume(val){
         this.settings.firstOsc.oldGain = this.settings.firstOsc.gain
         this.settings.firstOsc.gain = val

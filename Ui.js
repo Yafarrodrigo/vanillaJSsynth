@@ -49,13 +49,12 @@ export default class Ui{
 
         this.rangeElements = {}
 
-        
+        this.createMasterControls()
         this.createBothOscs()
         this.createAdsrUI()
         this.createDelayUI()
         this.createDistUI()
         this.createKeyboard()
-        //this.createListeners()
     }
 
     createBothOscs(){
@@ -67,6 +66,30 @@ export default class Ui{
         group.append(osc1,osc2)
 
         document.body.append(group)
+    }
+
+    createMasterControls(){
+        const container = newElem({type:"div",classes:["control-container"]})
+        const label = newElem({type:"div",classes:["container-label"]})
+        const knobContainer = newElem({type:"div",classes:["knob-container"]})
+        label.innerText = "Master"
+
+        // gain
+        const knobSpot = newElem({type:"div",classes:["knob-spot"]})
+        const newKnob1 = new Knob("masterGain", 0 , 1 , 0.001 , 0.5)
+        const knob1Elem = newKnob1.elem
+        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
+        newKnob1.rangeInput.addEventListener('change', (e) => {
+            this.synth.changeMasterGain(parseFloat(e.target.value))
+        })
+
+        container.append(label)
+        knobSpot.append(knob1Elem)
+        knobContainer.append(knobSpot)
+
+        container.append(knobContainer)
+
+        document.body.append(container)
     }
 
     createOscUI(number){
