@@ -37,13 +37,11 @@ export default class Ui{
 
     createBothOscs(){
 
-        const group = newElem({type:"div", id:"osc-group"})
         const osc1 = this.createOscUI(1)
         const osc2 = this.createOscUI(2)
 
-        group.append(osc1,osc2)
-
-        document.body.append(group)
+        document.getElementById('osc1Slot').append(osc1)
+        document.getElementById('osc2Slot').append(osc2)
     }
 
     createMasterControls(){
@@ -66,7 +64,7 @@ export default class Ui{
 
         container.append(knobContainer)
 
-        document.body.append(container)
+        document.getElementById('masterSlot').append(container)
     }
 
     createOscUI(number){
@@ -125,7 +123,7 @@ export default class Ui{
     }
 
     createAdsrUI(){
-        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const group = newElem({type:"div", classes:["control-container"]})
         const label = newElem({type:"div",classes:["container-label"]})
         label.innerText = "A.D.S.R."
         const container = newElem({type:"div",classes:["knob-container"]})
@@ -170,11 +168,11 @@ export default class Ui{
 
         container.append(knobSpot,knobSpot2,knobSpot3,knobSpot4)
         group.append(container)
-        document.body.append(group)
+        document.getElementById('adsrSlot').append(group)
     }
 
     createDelayUI(){
-        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const group = newElem({type:"div", classes:["control-container"]})
         const label = newElem({type:"div",classes:["container-label"]})
         label.innerText = "Delay"
         const container = newElem({type:"div",classes:["knob-container"]})
@@ -214,11 +212,11 @@ export default class Ui{
 
         container.append(knobSpot,knobSpot2,knobSpot3)
         group.append(container)
-        document.body.append(group)
+        document.getElementById('delaySlot').append(group)
     }
 
     createDistUI(){
-        const group = newElem({type:"div", classes:["control-container","adsr"]})
+        const group = newElem({type:"div", classes:["control-container"]})
         const label = newElem({type:"div",classes:["container-label"]})
         label.innerText = "Distortion"
         const container = newElem({type:"div",classes:["knob-container"]})
@@ -249,7 +247,7 @@ export default class Ui{
 
         container.append(knobSpot,knobSpot2)
         group.append(container)
-        document.body.append(group)
+        document.getElementById('distSlot').append(group)
     }
 
     createKeyboard(){
@@ -261,7 +259,7 @@ export default class Ui{
         }
 
         const container = document.getElementById('keyboard-container')
-        container.insertBefore(keyboardElem, container.firstChild)
+        container.append(keyboardElem)
     }
 
     press(note){
