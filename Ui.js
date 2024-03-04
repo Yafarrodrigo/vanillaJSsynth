@@ -21,33 +21,11 @@ export default class Ui{
             this.keys[note] = newNoteDiv
         }
 
-        //this.knob = new Knob( "volume" , 0 , 1 , 0.001 , 0.5 ,"knob")
-        // this.selector = new Selector("shape", ["sine","square","triangle","sawtooth"], "sine", "selector")
-        // this.switch = new Switch('dist', 0, 'switch')
-
-        this.masterGainControl = document.getElementById('control-gain')
-        this.osc1gainControl = document.getElementById('control-gain-osc')
-        this.osc2gainControl = document.getElementById('control-gain-osc2')
-        this.osc1octaveControl = document.getElementById('octave')
-        this.osc2octaveControl = document.getElementById('octave2')
-        this.osc1attackControl = document.getElementById('control-attack')
-        this.osc2attackControl = document.getElementById('control-attack2')
-        this.osc1decayControl = document.getElementById('control-decay')
-        this.osc2decayControl = document.getElementById('control-decay2')
-        this.osc1sustainControl = document.getElementById('control-sustain')
-        this.osc2sustainControl = document.getElementById('control-sustain2')
-        this.osc1releaseControl = document.getElementById('control-release')
-        this.osc2releaseControl = document.getElementById('control-release2')
-        this.osc1shapeControlGroup = document.querySelectorAll('input[name="control-shape"]')
-        this.osc2shapeControlGroup = document.querySelectorAll('input[name="control-shape2"]')
-        
         this.distortionButton = document.getElementById('distDiv')
         this.distortionControl = document.getElementById('control-distortion')
         
         this.delayControl = document.getElementById('control-delay')
         this.feedbackControl = document.getElementById('control-feedback')
-
-        this.rangeElements = {}
 
         this.createMasterControls()
         this.createBothOscs()
@@ -78,7 +56,6 @@ export default class Ui{
         const knobSpot = newElem({type:"div",classes:["knob-spot"]})
         const newKnob1 = new Knob("masterGain", 0 , 1 , 0.001 , 0.5)
         const knob1Elem = newKnob1.elem
-        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
         newKnob1.rangeInput.addEventListener('change', (e) => {
             this.synth.changeMasterGain(parseFloat(e.target.value))
         })
@@ -110,7 +87,6 @@ export default class Ui{
         const knobSpot = newElem({type:"div",classes:["knob-spot"]})
         const newKnob1 = new Knob( number === 1 ? "osc1gain" : "osc2gain", 0 , 1 , 0.001 , 0.5)
         const knob1Elem = newKnob1.elem
-        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
         newKnob1.rangeInput.addEventListener('change', (e) => {
             number === 1 ? this.synth.changeOsc1Volume(parseFloat(e.target.value)) : this.synth.changeOsc2Volume(parseFloat(e.target.value))
         })
@@ -118,7 +94,6 @@ export default class Ui{
         const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob2 = new Knob( number === 1 ? "osc1pan" : "osc2pan" , 0 , 1 , 0.001 , 0.5)
         const knob2Elem = newKnob2.elem
-        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
         newKnob2.rangeInput.addEventListener('change', (e) => {
             number === 1 ? this.synth.changeOsc1Pan(parseFloat(e.target.value)) : this.synth.changeOsc2Pan(parseFloat(e.target.value))
         })
@@ -158,7 +133,6 @@ export default class Ui{
         const knobSpot = newElem({type:"div",classes:["knob-spot"]})
         const newKnob1 = new Knob("adsr-attack", 0.001 , 1 , 0.001 , 0.1)
         const knob1Elem = newKnob1.elem
-        this.rangeElements[newKnob1.name] = newKnob1.rangeInput
         newKnob1.rangeInput.addEventListener('change', (e) => {
             this.synth.settings.adsr.attack = parseFloat(e.target.value)
         })
@@ -167,7 +141,6 @@ export default class Ui{
         const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob2 = new Knob("adsr-decay", 0 , 1 , 0.001 , 0.5)
         const knob2Elem = newKnob2.elem
-        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
         newKnob2.rangeInput.addEventListener('change', (e) => {
             this.synth.settings.adsr.decay = parseFloat(e.target.value)
         })
@@ -176,7 +149,6 @@ export default class Ui{
         const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob3 = new Knob("adsr-decay", 0 , 1 , 0.001 , 1)
         const knob3Elem = newKnob3.elem
-        this.rangeElements[newKnob3.name] = newKnob3.rangeInput
         newKnob3.rangeInput.addEventListener('change', (e) => {
             this.synth.settings.adsr.sustain = parseFloat(e.target.value)
         })
@@ -185,7 +157,6 @@ export default class Ui{
         const knobSpot4 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob4 = new Knob("adsr-decay", 0 , 1 , 0.001 , 0.1)
         const knob4Elem = newKnob4.elem
-        this.rangeElements[newKnob4.name] = newKnob4.rangeInput
         newKnob4.rangeInput.addEventListener('change', (e) => {
             this.synth.settings.adsr.release = parseFloat(e.target.value)
         })
@@ -223,7 +194,6 @@ export default class Ui{
         const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob2 = new Knob("delay-time", 0.001 , 1 , 0.001 , 0)
         const knob2Elem = newKnob2.elem
-        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
         newKnob2.rangeInput.addEventListener('change', (e) => {
             this.synth.updateDelayValue(parseFloat(e.target.value))
         })
@@ -232,7 +202,6 @@ export default class Ui{
         const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob3 = new Knob("delay-feedback", 0 , 1 , 0.001 , 0.25)
         const knob3Elem = newKnob3.elem
-        this.rangeElements[newKnob3.name] = newKnob3.rangeInput
         newKnob3.rangeInput.addEventListener('change', (e) => {
             this.synth.updateFeedbackValue(parseFloat(e.target.value))
         })
@@ -269,7 +238,6 @@ export default class Ui{
         const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob2 = new Knob("distortion-gain", 0 , 1 , 0.001 , 0)
         const knob2Elem = newKnob2.elem
-        this.rangeElements[newKnob2.name] = newKnob2.rangeInput
         newKnob2.rangeInput.addEventListener('change', (e) => {
             this.synth.updateDistValue(parseFloat(e.target.value))
         })
