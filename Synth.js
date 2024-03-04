@@ -1,3 +1,4 @@
+import defaultValues from "./defaultValues.js";
 import Keyboard from "./Keyboard.js";
 import NoteValues from "./NoteValues.js";
 import Ui from "./Ui.js";
@@ -14,34 +15,41 @@ export default class Synth{
         else this.ctx = ctx
 
         this.settings = {
-            masterGain: 0.5,
+            masterGain: defaultValues.masterGain,
             firstOsc: {
-                enabled: true,
-                oldGain:0,
-                gain: 0.5,
-                pan: 0,
-                octave: 0,
-                shape: "sine",
-                shapes:["sine","triange","square","sawtooth"]
+                enabled: defaultValues.firstOsc.enabled,
+                oldGain:defaultValues.firstOsc.oldGain,
+                gain: defaultValues.firstOsc.gain,
+                pan: defaultValues.firstOsc.pan,
+                octave: defaultValues.firstOsc.octave,
+                shape: defaultValues.firstOsc.shape,
+                shapes: defaultValues.firstOsc.shapes
             },
             secondOsc: {
-                enabled: true,
-                oldGain: 0,
-                gain: 0.5,
-                pan: 0,
-                octave: 0,
-                shape: "sine",
-                shapes:["sine","triange","square","sawtooth"]
+                enabled: defaultValues.secondOsc.enabled,
+                oldGain: defaultValues.secondOsc.oldGain,
+                gain: defaultValues.secondOsc.gain,
+                pan: defaultValues.secondOsc.pan,
+                octave: defaultValues.secondOsc.octave,
+                shape: defaultValues.secondOsc.shape,
+                shapes: defaultValues.secondOsc.shapes
             },
             distortion:{
-                enabled: false,
-                distFactor: 50,
-                currentValue: 0
+                enabled: defaultValues.distortion.enabled,
+                distFactor: defaultValues.distortion.distFactor,
+                currentValue: defaultValues.distortion.currentValue
             },
             delay:{
-                enabled: false,
-                delayTime: 0.001,
-                feedBack: 0.25
+                enabled: defaultValues.delay.enabled,
+                delayTime: defaultValues.delay.delayTime,
+                feedBack: defaultValues.delay.feedBack
+            },
+            adsr: {
+                attack: defaultValues.adsr.attack,
+                decay: defaultValues.adsr.decay,
+                sustain: defaultValues.adsr.sustain,
+                release: defaultValues.adsr.release,
+                maxTime: defaultValues.adsr.maxTime
             }
         }
 
@@ -60,8 +68,6 @@ export default class Synth{
             distGain: this.ctx.createGain(),
             delay: this.ctx.createDelay(),
             delayGain: this.ctx.createGain(),
-
-            adsr: {attack: 0.001, decay: 0.001, sustain: 1, release: 0.1, maxTime: 2}
         }
 
         this.modules.osc1MasterGain.channelCountMode = "explicit"
@@ -70,6 +76,8 @@ export default class Synth{
         this.modules.osc2MasterGain.channelCountMode = "explicit"
         this.modules.osc2MasterGain.channelCount = 2
         this.modules.osc2MasterGain.gain.value = this.settings.secondOsc.gain
+        this.modules.distGain.channelCountMode = "explicit"
+        this.modules.distGain.channelCount = 2
         this.modules.masterGain.channelCountMode = "explicit"
         this.modules.masterGain.channelCount = 2
 
@@ -160,6 +168,27 @@ export default class Synth{
         else this.settings.secondOsc.shape = "sine"
     }
 
+    osc1ChangeOctave(change){
+        if(change === 1){
+            if(this.settings.firstOsc.octave + 1 > 3) this.settings.firstOsc.octave = 3
+            else this.settings.firstOsc.octave += 1
+        }
+        if(change === -1){
+            if(this.settings.firstOsc.octave - 1 < -2) this.settings.firstOsc.octave = -2
+            else this.settings.firstOsc.octave -= 1
+        }
+    }
+    osc2ChangeOctave(change){
+        if(change === 1){
+            if(this.settings.secondOsc.octave + 1 > 3) this.settings.secondOsc.octave = 3
+            else this.settings.secondOsc.octave += 1
+        }
+        if(change === -1){
+            if(this.settings.secondOsc.octave - 1 < -2) this.settings.secondOsc.octave = -2
+            else this.settings.secondOsc.octave -= 1
+        }
+    }
+
     setupChain(){
         this.modules.osc1MasterGain.connect(this.modules.osc1pan)
         this.modules.osc2MasterGain.connect(this.modules.osc2pan)
@@ -236,7 +265,7 @@ export default class Synth{
     }
     noteOff(note){
         const now = this.ctx.currentTime
-        const {adsr} = this.modules
+        const {adsr} = this.settings
         const relDur = adsr.release * adsr.maxTime
         const relEnd = now + relDur
     

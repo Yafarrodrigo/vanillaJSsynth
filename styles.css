@@ -47,6 +47,11 @@ body{
     border-radius: 50%;
     width: 75px;
     height: 75px;
+    cursor: pointer;
+}
+
+.knob:hover{
+    background-color: #444;
 }
 
 .knobDot{
@@ -64,6 +69,32 @@ body{
     height: 75%;
     border: 1px solid green;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.switch:hover{
+    background-color: #444;
+}
+
+.twoButtons-container{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 90%;
+    justify-content: center;
+}
+
+.twoButtons-container div{
+   border: 1px solid green;
+   color: white;
+   padding: 5px;
+   border-radius: 5px;
+   cursor: pointer;
+   padding: 10px 5px;
+}
+
+.twoButtons-container div:hover{
+    background-color: #444;
 }
 
 .selector{
@@ -71,6 +102,11 @@ body{
     height: 75%;
     border: 1px solid green;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.selector:hover{
+    background-color: #444;
 }
 
 .control-container{

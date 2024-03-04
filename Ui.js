@@ -2,6 +2,7 @@ import Knob from "./Knob.js"
 import NoteValues from "./NoteValues.js"
 import Selector from "./Selector.js"
 import Switch from "./Switch.js"
+import TwoButtons from "./TwoButtons.js"
 
 export default class Ui{
     constructor(synth){
@@ -75,14 +76,14 @@ export default class Ui{
         const knobContainer = newElem({type:"div",classes:["knob-container"]})
         number === 1 ? label.innerText = "Osc1" : label.innerText = "Osc2"
         
-        //osc1 switch
+        // switch
         const knobSpot3 = newElem({type:"div",classes:["knob-spot"]})
         const newSwitch = new Switch(number === 1 ? 'osc1switch' : 'osc2switch', 1, () => {
             number === 1 ? this.synth.toggleOsc1() : this.synth.toggleOsc2() 
         })
         const switchElem = newSwitch.elem
 
-        // osc1 gain
+        // gain
         const knobSpot = newElem({type:"div",classes:["knob-spot"]})
         const newKnob1 = new Knob( number === 1 ? "osc1gain" : "osc2gain", 0 , 1 , 0.001 , 0.5)
         const knob1Elem = newKnob1.elem
@@ -90,7 +91,7 @@ export default class Ui{
         newKnob1.rangeInput.addEventListener('change', (e) => {
             number === 1 ? this.synth.changeOsc1Volume(parseFloat(e.target.value)) : this.synth.changeOsc2Volume(parseFloat(e.target.value))
         })
-        //osc1 pan
+        // pan
         const knobSpot2 = newElem({type:"div",classes:["knob-spot"]})
         const newKnob2 = new Knob( number === 1 ? "osc1pan" : "osc2pan" , 0 , 1 , 0.001 , 0.5)
         const knob2Elem = newKnob2.elem
@@ -98,18 +99,27 @@ export default class Ui{
         newKnob2.rangeInput.addEventListener('change', (e) => {
             number === 1 ? this.synth.changeOsc1Pan(parseFloat(e.target.value)) : this.synth.changeOsc2Pan(parseFloat(e.target.value))
         })
-        // osc1 shape selector
+        // shape selector
         const knobSpot4 = newElem({type:"div",classes:["knob-spot"]})
         const selector = new Selector( number === 1 ? "osc1shape" : "osc2shape", ["sine","square","triangle","sawtooth"], "sine", ()=>{
             number === 1 ? this.synth.changeShapeOsc1() : this.synth.changeShapeOsc2()
         })
         const selectElem = selector.elem
 
+        // octave
+        const knobSpot5 = newElem({type:"div",classes:["knob-spot"]})
+        const twoButtons = new TwoButtons( number === 1 ? 'osc1octave' : 'osc2octave',
+            () => number === 1 ? this.synth.osc1ChangeOctave(1) : this.synth.osc2ChangeOctave(1),
+            () => number === 1 ? this.synth.osc1ChangeOctave(-1) : this.synth.osc2ChangeOctave(-1))
+
+        const twoButtonsElem = twoButtons.container
+
         knobSpot.append(knob1Elem)
         knobSpot2.append(knob2Elem)
         knobSpot3.append(switchElem)
         knobSpot4.append(selectElem)
-        knobContainer.append(knobSpot3,knobSpot,knobSpot2,knobSpot4)
+        knobSpot5.append(twoButtonsElem)
+        knobContainer.append(knobSpot3,knobSpot,knobSpot2,knobSpot4,knobSpot5)
         container.append(label,knobContainer)
         group.append(container)
         
@@ -127,7 +137,7 @@ export default class Ui{
         const knob1Elem = newKnob1.elem
         this.rangeElements[newKnob1.name] = newKnob1.rangeInput
         newKnob1.rangeInput.addEventListener('change', (e) => {
-            this.synth.modules.adsr.attack = parseFloat(e.target.value)
+            this.synth.settings.adsr.attack = parseFloat(e.target.value)
         })
 
         // adsr decay
@@ -136,7 +146,7 @@ export default class Ui{
         const knob2Elem = newKnob2.elem
         this.rangeElements[newKnob2.name] = newKnob2.rangeInput
         newKnob2.rangeInput.addEventListener('change', (e) => {
-            this.synth.modules.adsr.decay = parseFloat(e.target.value)
+            this.synth.settings.adsr.decay = parseFloat(e.target.value)
         })
 
         // adsr sustain
@@ -145,7 +155,7 @@ export default class Ui{
         const knob3Elem = newKnob3.elem
         this.rangeElements[newKnob3.name] = newKnob3.rangeInput
         newKnob3.rangeInput.addEventListener('change', (e) => {
-            this.synth.modules.adsr.sustain = parseFloat(e.target.value)
+            this.synth.settings.adsr.sustain = parseFloat(e.target.value)
         })
 
         // adsr release
@@ -154,7 +164,7 @@ export default class Ui{
         const knob4Elem = newKnob4.elem
         this.rangeElements[newKnob4.name] = newKnob4.rangeInput
         newKnob4.rangeInput.addEventListener('change', (e) => {
-            this.synth.modules.adsr.release = parseFloat(e.target.value)
+            this.synth.settings.adsr.release = parseFloat(e.target.value)
         })
 
         group.append(label)

@@ -33,10 +33,10 @@ export default class Internals{
             octave = settings.secondOsc.octave
         }
 
-        decay = modules.adsr.decay
-        sustain = modules.adsr.sustain
-        attack = modules.adsr.attack
-        maxTime = modules.adsr.maxTime
+        decay = settings.adsr.decay
+        sustain = settings.adsr.sustain
+        attack = settings.adsr.attack
+        maxTime = settings.adsr.maxTime
         
         const note = Object.entries(NoteValues).find( entry => entry[1] === freq)[0]
 
@@ -54,7 +54,9 @@ export default class Internals{
         gain.gain.setTargetAtTime(0.25 * sustain, atkEnd, decayDur)
 
         let octaveMult
-        if(octave === -1){
+        if(octave === -2){
+            octaveMult = 0.25
+        }else if(octave === -1){
             octaveMult = 0.5
         }else if(octave === -2){
             octaveMult = 0.25
@@ -62,6 +64,8 @@ export default class Internals{
             octaveMult = 2
         }else if(octave === 2){
             octaveMult = 3
+        }else if(octave === 3){
+            octaveMult = 4
         }else octaveMult = 1
         
         osc.type = shape
